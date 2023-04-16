@@ -1,4 +1,4 @@
-package ru.beganov.toco.controller;
+package ru.beganov.tacos.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

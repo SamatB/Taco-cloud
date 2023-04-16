@@ -1,4 +1,4 @@
-package ru.beganov.toco;
+package ru.beganov.tacos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

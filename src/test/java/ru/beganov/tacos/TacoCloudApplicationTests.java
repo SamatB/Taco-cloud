@@ -1,4 +1,4 @@
-package ru.beganov.toco;
+package ru.beganov.tacos;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
