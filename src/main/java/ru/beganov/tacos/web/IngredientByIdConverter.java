@@ -6,9 +6,6 @@ import org.springframework.stereotype.Component;
 import ru.beganov.tacos.db.IngredientRepository;
 import ru.beganov.tacos.entity.Ingredient;
 
-
-import java.util.Optional;
-
 @Component
 public class IngredientByIdConverter implements Converter<String, Ingredient> {
 
