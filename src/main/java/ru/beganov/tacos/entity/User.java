@@ -36,6 +36,9 @@ public class User implements UserDetails {
 
     }
 
+    public User(String username, String encode, String fullname, String street, String city, String state, String zip, String phone) {
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
