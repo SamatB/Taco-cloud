@@ -2,6 +2,7 @@ package ru.beganov.tacos.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.beganov.tacos.db.OrderRepository;
 import ru.beganov.tacos.entity.TacoOrder;
+import ru.beganov.tacos.entity.User;
 
 @Slf4j
 @Controller
@@ -31,10 +33,12 @@ public class OrderController {
 
     @PostMapping
     public String processOrder(@Valid TacoOrder order, Errors errors,
-                               SessionStatus sessionStatus) {
+                               SessionStatus sessionStatus, Authentication authentication) {
         if (errors.hasErrors()) {
             return "orderForm";
         }
+        User user = (User) authentication.getPrincipal();
+        order.setUser(user);
         orderRepository.save(order);
 //        log.info("Order submitted: {}", order);
         sessionStatus.setComplete();
