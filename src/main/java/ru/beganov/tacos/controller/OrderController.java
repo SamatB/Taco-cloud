@@ -24,7 +24,6 @@ import ru.beganov.tacos.web.OrderProps;
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
-//@ConfigurationProperties(prefix = "taco.orders")
 public class OrderController {
 
     private final OrderRepository orderRepository;
