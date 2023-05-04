@@ -2,8 +2,7 @@ package ru.beganov.tacos.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -19,24 +18,23 @@ import org.springframework.web.bind.support.SessionStatus;
 import ru.beganov.tacos.db.OrderRepository;
 import ru.beganov.tacos.entity.TacoOrder;
 import ru.beganov.tacos.entity.User;
+import ru.beganov.tacos.web.OrderProps;
 
 @Slf4j
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
-@ConfigurationProperties(prefix = "taco.orders")
+//@ConfigurationProperties(prefix = "taco.orders")
 public class OrderController {
 
     private final OrderRepository orderRepository;
 
-    private int pageSize = 20;
+    private final OrderProps orderProps;
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public OrderController(OrderRepository orderRepository) {
+    @Autowired
+    public OrderController(OrderRepository orderRepository, OrderProps orderProps) {
         this.orderRepository = orderRepository;
+        this.orderProps = orderProps;
     }
 
     @GetMapping("/current")
@@ -61,7 +59,7 @@ public class OrderController {
     @GetMapping
     public String ordersForUser(
             @AuthenticationPrincipal User user, Model model) {
-        Pageable pageable = PageRequest.of(0, pageSize);
+        Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
         model.addAttribute("orders", orderRepository.findByUserOOrderByPlaceAtDesc(user, pageable));
         return "orderList";
     }
