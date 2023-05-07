@@ -37,4 +37,10 @@ public class TacoController {
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Taco createTaco(@RequestBody Taco taco) {
+        return tacoRepository.save(taco);
+    }
 }
