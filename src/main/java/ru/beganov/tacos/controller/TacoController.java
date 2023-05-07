@@ -1,5 +1,6 @@
 package ru.beganov.tacos.controller;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -80,5 +81,12 @@ public class TacoController {
         return orderRepository.save(tacoOrder);
     }
 
+    @DeleteMapping("/{orderId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTacoOrder(@PathVariable("orderId") Long orderID) {
+        try {
+            orderRepository.deleteById(orderID);
+        } catch (EmptyResultDataAccessException ex) {}
+    }
 
 }
