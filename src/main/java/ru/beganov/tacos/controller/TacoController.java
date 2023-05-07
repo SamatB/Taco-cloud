@@ -5,8 +5,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.beganov.tacos.db.OrderRepository;
 import ru.beganov.tacos.db.TacoRepository;
 import ru.beganov.tacos.entity.Taco;
+import ru.beganov.tacos.entity.TacoOrder;
 
 import java.util.Optional;
 
@@ -18,8 +20,11 @@ public class TacoController {
 
     private final TacoRepository tacoRepository;
 
-    public TacoController(TacoRepository tacoRepository) {
+    private final OrderRepository orderRepository;
+
+    public TacoController(TacoRepository tacoRepository, OrderRepository orderRepository) {
         this.tacoRepository = tacoRepository;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping(params = "recent")
@@ -43,4 +48,37 @@ public class TacoController {
     public Taco createTaco(@RequestBody Taco taco) {
         return tacoRepository.save(taco);
     }
+
+    @PatchMapping(path = "/{orderId}", consumes = "application/json")
+    public TacoOrder patchOrder(@PathVariable("orderId") Long orderId,
+                                @RequestBody TacoOrder patch) {
+        TacoOrder tacoOrder = orderRepository.findById(orderId).get();
+        if (patch.getDeliveryName() != null) {
+            tacoOrder.setDeliveryName(patch.getDeliveryName());
+        }
+        if (patch.getDeliveryStreet() != null) {
+            tacoOrder.setDeliveryStreet(patch.getDeliveryStreet());
+        }
+        if (patch.getDeliveryCity() != null) {
+            tacoOrder.setDeliveryCity(patch.getDeliveryCity());
+        }
+        if (patch.getDeliveryState() != null) {
+            tacoOrder.setDeliveryState(patch.getDeliveryState());
+        }
+        if (patch.getDeliveryZip() != null) {
+            tacoOrder.setDeliveryZip(patch.getDeliveryZip());
+        }
+        if (patch.getCcNumber() != null) {
+            tacoOrder.setCcNumber(patch.getCcNumber());
+        }
+        if (patch.getCcExpiration() != null) {
+            tacoOrder.setCcExpiration(patch.getCcExpiration());
+        }
+        if (patch.getCcCVV() != null) {
+            tacoOrder.setCcCVV(patch.getCcCVV());
+        }
+        return orderRepository.save(tacoOrder);
+    }
+
+
 }
